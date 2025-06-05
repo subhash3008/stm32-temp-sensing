@@ -6,8 +6,8 @@
   *
   * Features:
   * - ADC reads internal temperature sensor
-  * - LED turns ON if temp > 50°C
-  * - LED blinks if temp > 70°C
+  * - LED turns ON if temp > 26°C
+  * - LED blinks if temp > 29°C
   * - UART logs temperature every second
   * - FreeRTOS tasks for ADC, LED, UART
   *
@@ -224,7 +224,7 @@ void adc_task(void *argument) {
 /* LED Task: sets or toggles LED based on temperature */
 void led_task(void *argument) {
   for (;;) {
-    float lf_temp;
+    float lf_temp = 0.0f;
 
     if (osOK == osMutexWait(gx_temp_mutex_handle, osWaitForever))
     {
@@ -252,11 +252,12 @@ void led_task(void *argument) {
 void uart_task(void * argument) {
   char l_msg_buff[64]; /* Buffer for logging the temperature */
   for (;;) {
-    float lf_temp;
+    float lf_temp = 0.0f;
 
-    osMutexWait(gx_temp_mutex_handle, osWaitForever);
-    lf_temp = gf_temperature;
-    osMutexRelease(gx_temp_mutex_handle);
+    if (osOK == osMutexWait(gx_temp_mutex_handle, osWaitForever)) {
+      lf_temp = gf_temperature;
+      osMutexRelease(gx_temp_mutex_handle);
+    }
 
     snprintf(l_msg_buff, sizeof(l_msg_buff), "Temp: %.2f C\r\n", lf_temp);
     HAL_UART_Transmit(&huart2, (uint8_t *)l_msg_buff, strlen(l_msg_buff), HAL_MAX_DELAY);
@@ -320,15 +321,7 @@ void SystemClock_Config(void)
 static void MX_ADC1_Init(void)
 {
 
-  /* USER CODE BEGIN ADC1_Init 0 */
-
-  /* USER CODE END ADC1_Init 0 */
-
   ADC_ChannelConfTypeDef sConfig = {0};
-
-  /* USER CODE BEGIN ADC1_Init 1 */
-
-  /* USER CODE END ADC1_Init 1 */
 
   /** Configure the global features of the ADC (Clock, Resolution, Data Alignment and number of conversion)
   */
@@ -358,9 +351,6 @@ static void MX_ADC1_Init(void)
   {
     Error_Handler();
   }
-  /* USER CODE BEGIN ADC1_Init 2 */
-
-  /* USER CODE END ADC1_Init 2 */
 
 }
 
@@ -371,14 +361,6 @@ static void MX_ADC1_Init(void)
   */
 static void MX_USART2_UART_Init(void)
 {
-
-  /* USER CODE BEGIN USART2_Init 0 */
-
-  /* USER CODE END USART2_Init 0 */
-
-  /* USER CODE BEGIN USART2_Init 1 */
-
-  /* USER CODE END USART2_Init 1 */
   huart2.Instance = USART2;
   huart2.Init.BaudRate = 115200;
   huart2.Init.WordLength = UART_WORDLENGTH_8B;
@@ -391,9 +373,6 @@ static void MX_USART2_UART_Init(void)
   {
     Error_Handler();
   }
-  /* USER CODE BEGIN USART2_Init 2 */
-
-  /* USER CODE END USART2_Init 2 */
 
 }
 
@@ -430,28 +409,6 @@ static void MX_GPIO_Init(void)
 
 }
 
-/* USER CODE BEGIN 4 */
-
-/* USER CODE END 4 */
-
-/* USER CODE BEGIN Header_StartDefaultTask */
-/**
-  * @brief  Function implementing the defaultTask thread.
-  * @param  argument: Not used
-  * @retval None
-  */
-/* USER CODE END Header_StartDefaultTask */
-void StartDefaultTask(void *argument)
-{
-  /* USER CODE BEGIN 5 */
-  /* Infinite loop */
-  for(;;)
-  {
-    osDelay(1);
-  }
-  /* USER CODE END 5 */
-}
-
 /**
   * @brief  Period elapsed callback in non blocking mode
   * @note   This function is called  when TIM1 interrupt took place, inside
@@ -462,15 +419,9 @@ void StartDefaultTask(void *argument)
   */
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
-  /* USER CODE BEGIN Callback 0 */
-
-  /* USER CODE END Callback 0 */
   if (htim->Instance == TIM1) {
     HAL_IncTick();
   }
-  /* USER CODE BEGIN Callback 1 */
-
-  /* USER CODE END Callback 1 */
 }
 
 /**
@@ -479,13 +430,11 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
   */
 void Error_Handler(void)
 {
-  /* USER CODE BEGIN Error_Handler_Debug */
   /* User can add his own implementation to report the HAL error return state */
   __disable_irq();
   while (1)
   {
   }
-  /* USER CODE END Error_Handler_Debug */
 }
 
 #ifdef  USE_FULL_ASSERT
@@ -498,9 +447,7 @@ void Error_Handler(void)
   */
 void assert_failed(uint8_t *file, uint32_t line)
 {
-  /* USER CODE BEGIN 6 */
   /* User can add his own implementation to report the file name and line number,
      ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
-  /* USER CODE END 6 */
 }
 #endif /* USE_FULL_ASSERT */

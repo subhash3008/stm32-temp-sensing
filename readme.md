@@ -64,7 +64,7 @@ This project demonstrates a temperature sensing application on the STM32F446RE m
 
 ## Key Functions
 
-### `convert_adc_to_temperature(uint32_t raw_adc)`
+#### `convert_adc_to_temperature(uint32_t raw_adc)`
 
 Converts raw ADC value to temperature in Celsius using factory calibration values embedded in MCU memory.
 
