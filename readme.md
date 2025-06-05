@@ -82,7 +82,7 @@ Converts raw ADC value to temperature in Celsius using factory calibration value
 2. Open the project in STM32CubeIDE.  
 3. Build and flash the code to an STM32F446RE-based board.  
 4. Connect UART2 pins to a serial terminal at 115200 baud to monitor temperature logs. e.g. using Tera Term:
-![UART Output on Teraterm](images/uart_output.png) 
+![UART Output on Teraterm](Images/uart_output.png) 
 5. Observe LED behavior as temperature varies. 
 
 ---
