@@ -1,0 +1,45 @@
+# STM32CubeIDE-specific files
+.settings/
+.cproject
+.project
+loadable_modules/
+
+# Build output folders
+Debug/
+Release/
+build/
+Core/Inc/.mxproject
+*.o
+*.d
+*.elf
+*.map
+*.lst
+*.bin
+*.hex
+
+# IDE backup files
+*.launch
+*.log
+*.bak
+*.swp
+*.tmp
+
+# CubeMX-generated database files
+*.ioc_saved
+*.db
+
+# OS-generated files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+desktop.ini
+
+# Misc
+*.pyc
+__pycache__/
+.vscode/
+*.suo
+
+# Optional: ignore user-generated code if you only want auto-gen files
+# Core/Src/
+# Core/Inc/
