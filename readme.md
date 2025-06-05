@@ -79,7 +79,8 @@ Converts raw ADC value to temperature in Celsius using factory calibration value
 ## Usage
 
 1. Clone this repository.  
-2. Open the project in STM32CubeIDE.  
+2. Open the project in STM32CubeIDE.
+2a. Add the flag `-u _printf_float` to enable float formatting in the Project Properties -> C/C++ Build -> Settings -> Tool Settings -> MCU GCC Linker -> Miscellaneous -> Other Flags.
 3. Build and flash the code to an STM32F446RE-based board.  
 4. Connect UART2 pins to a serial terminal at 115200 baud to monitor temperature logs. e.g. using Tera Term:
 ![UART Output on Teraterm](Images/uart_output.png) 
